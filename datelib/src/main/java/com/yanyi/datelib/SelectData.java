@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.yanyi.datelib.config.SelectType;
 import com.yanyi.datelib.wheelview.AbstractWheelTextAdapter1;
 import com.yanyi.datelib.wheelview.OnWheelChangedListener;
 import com.yanyi.datelib.wheelview.OnWheelScrollListener;
@@ -37,7 +38,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
     private TextView btnSure;
     private TextView btnCancel;
 
-    private LinearLayout hourContainer,minuteContainer;
+    private LinearLayout hourContainer, minuteContainer;
 
     private Context context;
     private JSONObject mJsonObj;
@@ -61,11 +62,12 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
     private int maxSize = 14;
     private int minSize = 12;
     private Calendar calendar = Calendar.getInstance();
-    public SelectData(final Context context){
-        this(context,true);
+
+    public SelectData(final Context context) {
+        this(context, SelectType.NONE);
     }
 
-    public SelectData(final Context context, boolean showTime) {
+    public SelectData(final Context context, SelectType selectType) {
         super(context);
         this.context = context;
         View view = View.inflate(context, R.layout.select_date_pop_layout, null);
@@ -82,14 +84,26 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
 
         hourContainer = (LinearLayout) view.findViewById(R.id.hour_container);
         minuteContainer = (LinearLayout) view.findViewById(R.id.minute_container);
-        if(showTime){
-            hourContainer.setVisibility(View.VISIBLE);
-            minuteContainer.setVisibility(View.VISIBLE);
-        }else {
-            hourContainer.setVisibility(View.GONE);
-            minuteContainer.setVisibility(View.GONE);
-        }
+//        if(showTime){
+//            hourContainer.setVisibility(View.VISIBLE);
+//            minuteContainer.setVisibility(View.VISIBLE);
+//        }else {
+//            hourContainer.setVisibility(View.GONE);
+//            minuteContainer.setVisibility(View.GONE);
+//        }
 
+        switch (selectType) {
+            case NONE:
+            default:
+                hourContainer.setVisibility(View.VISIBLE);
+                minuteContainer.setVisibility(View.VISIBLE);
+                break;
+            case HOUR:
+                hourContainer.setVisibility(View.GONE);
+            case MIN:
+                minuteContainer.setVisibility(View.GONE);
+                break;
+        }
 
         //设置SelectPicPopupWindow的View
         this.setContentView(view);
@@ -129,10 +143,10 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
         wvDay.setViewAdapter(dayAdapter);
         wvDay.setCurrentItem(Integer.parseInt(strDay) - 1);
 
-        hourAdapter = new DateTextAdapter(context, mHourDatas, Integer.parseInt(strHour) , maxSize, minSize);
+        hourAdapter = new DateTextAdapter(context, mHourDatas, Integer.parseInt(strHour), maxSize, minSize);
         wvHour.setVisibleItems(5);
         wvHour.setViewAdapter(hourAdapter);
-        wvHour.setCurrentItem(Integer.parseInt(strHour) );
+        wvHour.setCurrentItem(Integer.parseInt(strHour));
 
         minuteAdapter = new DateTextAdapter(context, mMinuteDatas, Integer.parseInt(strMinute), maxSize, minSize);
         wvMinute.setVisibleItems(5);
@@ -146,7 +160,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 // TODO Auto-generated method stub
                 String currentText = (String) yearAdapter.getItemText(wheel.getCurrentItem());
                 strYear = currentText;
-                setTextviewSize(currentText, yearAdapter);
+                setTextViewSize(currentText, yearAdapter);
 
 
                 mDayDatas = getDays(Integer.parseInt(strYear), Integer.parseInt(strMonth));
@@ -154,7 +168,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 wvDay.setVisibleItems(5);
                 wvDay.setViewAdapter(dayAdapter);
                 wvDay.setCurrentItem(0);
-                setTextviewSize("0", dayAdapter);
+                setTextViewSize("0", dayAdapter);
             }
         });
 
@@ -170,7 +184,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
             public void onScrollingFinished(WheelView wheel) {
                 // TODO Auto-generated method stub
                 String currentText = (String) yearAdapter.getItemText(wheel.getCurrentItem());
-                setTextviewSize(currentText, yearAdapter);
+                setTextViewSize(currentText, yearAdapter);
             }
         });
 
@@ -181,7 +195,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 // TODO Auto-generated method stub
                 String currentText = (String) monthAdapter.getItemText(wheel.getCurrentItem());
                 strMonth = currentText;
-                setTextviewSize(currentText, monthAdapter);
+                setTextViewSize(currentText, monthAdapter);
 
 
                 mDayDatas = getDays(Integer.parseInt(strYear), Integer.parseInt(strMonth));
@@ -189,7 +203,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 wvDay.setVisibleItems(5);
                 wvDay.setViewAdapter(dayAdapter);
                 wvDay.setCurrentItem(0);
-                setTextviewSize("0", dayAdapter);
+                setTextViewSize("0", dayAdapter);
 
 
             }
@@ -207,7 +221,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
             public void onScrollingFinished(WheelView wheel) {
                 // TODO Auto-generated method stub
                 String currentText = (String) monthAdapter.getItemText(wheel.getCurrentItem());
-                setTextviewSize(currentText, monthAdapter);
+                setTextViewSize(currentText, monthAdapter);
             }
         });
 
@@ -218,7 +232,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 // TODO Auto-generated method stub
                 String currentText = (String) dayAdapter.getItemText(wheel.getCurrentItem());
                 strDay = currentText;
-                setTextviewSize(currentText, dayAdapter);
+                setTextViewSize(currentText, dayAdapter);
             }
         });
 
@@ -234,7 +248,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
             public void onScrollingFinished(WheelView wheel) {
                 // TODO Auto-generated method stub
                 String currentText = (String) dayAdapter.getItemText(wheel.getCurrentItem());
-                setTextviewSize(currentText, dayAdapter);
+                setTextViewSize(currentText, dayAdapter);
             }
         });
 
@@ -246,7 +260,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 // TODO Auto-generated method stub
                 String currentText = (String) hourAdapter.getItemText(wheel.getCurrentItem());
                 strMinute = currentText;
-                setTextviewSize(currentText, hourAdapter);
+                setTextViewSize(currentText, hourAdapter);
             }
         });
 
@@ -262,7 +276,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
             public void onScrollingFinished(WheelView wheel) {
                 // TODO Auto-generated method stub
                 String currentText = (String) hourAdapter.getItemText(wheel.getCurrentItem());
-                setTextviewSize(currentText, hourAdapter);
+                setTextViewSize(currentText, hourAdapter);
             }
         });
         wvMinute.addChangingListener(new OnWheelChangedListener() {
@@ -272,7 +286,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
                 // TODO Auto-generated method stub
                 String currentText = (String) minuteAdapter.getItemText(wheel.getCurrentItem());
                 strMinute = currentText;
-                setTextviewSize(currentText, minuteAdapter);
+                setTextViewSize(currentText, minuteAdapter);
             }
         });
 
@@ -288,7 +302,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
             public void onScrollingFinished(WheelView wheel) {
                 // TODO Auto-generated method stub
                 String currentText = (String) minuteAdapter.getItemText(wheel.getCurrentItem());
-                setTextviewSize(currentText, minuteAdapter);
+                setTextViewSize(currentText, minuteAdapter);
             }
         });
 
@@ -325,20 +339,20 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
     /**
      * 设置字体大小
      *
-     * @param curriteItemText
+     * @param currieItemText
      * @param adapter
      */
-    public void setTextviewSize(String curriteItemText, DateTextAdapter adapter) {
+    public void setTextViewSize(String currieItemText, DateTextAdapter adapter) {
         ArrayList<View> arrayList = adapter.getTestViews();
         int size = arrayList.size();
         String currentText;
         for (int i = 0; i < size; i++) {
-            TextView textvew = (TextView) arrayList.get(i);
-            currentText = textvew.getText().toString();
-            if (curriteItemText.equals(currentText)) {
-                textvew.setTextSize(14);
+            TextView textView = (TextView) arrayList.get(i);
+            currentText = textView.getText().toString();
+            if (currieItemText.equals(currentText)) {
+                textView.setTextSize(14);
             } else {
-                textvew.setTextSize(12);
+                textView.setTextSize(12);
             }
         }
     }
@@ -403,10 +417,10 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         strYear = String.valueOf(year);
-        strMonth = (month<10?"0":"")+ String.valueOf(month);
-        strDay = (day<10?"0":"")+ String.valueOf(day);
-        strHour = (hour<10?"0":"")+ String.valueOf(hour);
-        strMinute = (minute<10?"0":"")+ String.valueOf(minute);
+        strMonth = (month < 10 ? "0" : "") + String.valueOf(month);
+        strDay = (day < 10 ? "0" : "") + String.valueOf(day);
+        strHour = (hour < 10 ? "0" : "") + String.valueOf(hour);
+        strMinute = (minute < 10 ? "0" : "") + String.valueOf(minute);
 
         mYearDatas = new String[150];
         //int year = calendar.get(Calendar.YEAR);
@@ -460,10 +474,10 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
         Calendar newCal = Calendar.getInstance();
         // newCal.s
         newCal.set(Calendar.YEAR, year);
-        newCal.set(Calendar.MONTH, month-1);
+        newCal.set(Calendar.MONTH, month - 1);
         int count = newCal.getActualMaximum(Calendar.DAY_OF_MONTH);//new Date(year,month,0).getDate();
 
-         Log.e(TAG, "getDays: "+ year + ":" + month+":"+count );
+        Log.e(TAG, "getDays: " + year + ":" + month + ":" + count);
         datas = new String[count];
         for (int i = 0; i < count; i++) {
             if (i < 9) {

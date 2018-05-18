@@ -17,7 +17,17 @@
             }
         }
     }
-
+    
+### 1.0.2版本
+    SelectData selectData = new SelectData(this,selectType);
+    
+    SelectType 表示需要隐藏的段落
+    /**
+     * 不隐藏，隐藏时，隐藏分
+     */
+     NONE, HOUR, MIN  
+    
+### 1.0.1版本
 ##### 带时间的选择器
     SelectData selectData = new SelectData(this);
     selectData.showAtLocation(but, Gravity.BOTTOM, 0, 0);
