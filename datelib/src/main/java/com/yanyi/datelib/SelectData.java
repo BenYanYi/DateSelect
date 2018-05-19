@@ -52,6 +52,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
     private DateTextAdapter hourAdapter;
     private DateTextAdapter minuteAdapter;
 
+    private SelectType selectType;
     private String strYear;
     private String strMonth;
     private String strDay;
@@ -70,6 +71,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
     public SelectData(final Context context, SelectType selectType) {
         super(context);
         this.context = context;
+        this.selectType = selectType;
         View view = View.inflate(context, R.layout.select_date_pop_layout, null);
 
         wvYear = (WheelView) view.findViewById(R.id.wv_date_year);
@@ -385,7 +387,7 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
      * @author Administrator
      */
     public interface OnDateClickListener {
-        public void onClick(String year, String month, String day, String hour, String minute);
+        void onClick(String year, String month, String day, String hour, String minute);
     }
 
     /**
@@ -419,9 +421,21 @@ public class SelectData extends PopupWindow implements View.OnClickListener {
         strYear = String.valueOf(year);
         strMonth = (month < 10 ? "0" : "") + String.valueOf(month);
         strDay = (day < 10 ? "0" : "") + String.valueOf(day);
-        strHour = (hour < 10 ? "0" : "") + String.valueOf(hour);
-        strMinute = (minute < 10 ? "0" : "") + String.valueOf(minute);
-
+        switch (selectType) {
+            case NONE:
+            default:
+                strHour = (hour < 10 ? "0" : "") + String.valueOf(hour);
+                strMinute = (minute < 10 ? "0" : "") + String.valueOf(minute);
+                break;
+            case HOUR:
+                strHour = "00";
+                strMinute = "00";
+                break;
+            case MIN:
+                strHour = (hour < 10 ? "0" : "") + String.valueOf(hour);
+                strMinute = "00";
+                break;
+        }
         mYearDatas = new String[150];
         //int year = calendar.get(Calendar.YEAR);
         for (int i = year - 100, j = 0; i < year + 50; i++, j++) {

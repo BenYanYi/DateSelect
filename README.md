@@ -5,7 +5,7 @@
 
 #### module 下添加
 
-     compile 'com.github.BenYanYi:DateSelect:1.0.1'
+     compile 'com.github.BenYanYi:DateSelect:1.0.2'
 
  #### project 下添加
 
@@ -21,11 +21,17 @@
 ### 1.0.2版本
     SelectData selectData = new SelectData(this,selectType);
     
+    其余与1.0.1版本一样
+    
     SelectType 表示需要隐藏的段落
+    
     /**
      * 不隐藏，隐藏时，隐藏分
      */
      NONE, HOUR, MIN  
+     
+     添加SelectPeriod(时间段选择，结束时间需大于开始时间，且不能大于当前时间)
+     用法和时间选择器一样(SelectData)
     
 ### 1.0.1版本
 ##### 带时间的选择器
