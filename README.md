@@ -5,7 +5,7 @@
 
 #### module 下添加
 
-     compile 'com.github.BenYanYi:DateSelect:1.0.2'
+     compile 'com.github.BenYanYi:DateSelect:1.0.3'
 
 #### project 下添加
 
