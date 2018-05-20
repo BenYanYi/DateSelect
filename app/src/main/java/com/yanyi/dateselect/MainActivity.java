@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.yanyi.datelib.SelectPeriod;
-import com.yanyi.datelib.config.SelectType;
 
 /**
  * @author Administrator
@@ -43,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void select(View view) {
-        SelectPeriod selectPeriod = new SelectPeriod(mContext, SelectType.NONE);
-        selectPeriod.showAtLocation(view, Gravity.CENTER, 0, 0);
+        SelectPeriod selectPeriod = new SelectPeriod(mContext);
+        selectPeriod.showAtLocation(view, Gravity.BOTTOM, 0, 0);
         selectPeriod.setOnDateClickListener(new SelectPeriod.OnDateClickListener() {
             @Override
             public void onDateClickListener(String startTime, String endTime) {

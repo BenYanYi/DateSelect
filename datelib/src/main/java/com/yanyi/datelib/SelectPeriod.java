@@ -33,6 +33,9 @@ public class SelectPeriod extends PopupWindow implements View.OnClickListener {
     private String TAG = "SelectPeriod";
     private Context mContext;
     private SelectType selectType;
+    private boolean boo;
+
+    public static boolean isDebug = true;
 
     private View mView;
 
@@ -98,13 +101,22 @@ public class SelectPeriod extends PopupWindow implements View.OnClickListener {
     private OnDateClickListener onDateClickListener;
 
     public SelectPeriod(Context context) {
-        this(context, SelectType.NONE);
+        this(context, SelectType.NONE, true);
+    }
+
+    public SelectPeriod(Context context, boolean judgmentTime) {
+        this(context, SelectType.NONE, judgmentTime);
     }
 
     public SelectPeriod(Context context, SelectType selectType) {
+        this(context, selectType, true);
+    }
+
+    public SelectPeriod(Context context, SelectType selectType, boolean judgmentTime) {
         super(context);
         this.mContext = context;
         this.selectType = selectType;
+        this.boo = judgmentTime;
         mView = View.inflate(context, R.layout.select_period_pop_layout, null);
         init();
         //设置SelectPicPopupWindow的View
@@ -609,18 +621,25 @@ public class SelectPeriod extends PopupWindow implements View.OnClickListener {
                 String startTimeStr = getStartTimeStr();
                 String endTimeStr = getEndTimeStr();
                 log(getStringDate());
-                if (TimeComparison(endTimeStr, getStringDate())) {
-                    if (TimeComparison(startTimeStr, endTimeStr)) {
-                        log(startTimeStr + "\t" + endTimeStr);
-                        onDateClickListener.onDateClickListener(startTimeStr, endTimeStr);
-                        dismiss();
+                if (boo) {
+                    if (TimeComparison(startTimeStr, getStringDate())) {
+                        if (TimeComparison(endTimeStr, getStringDate())) {
+                            if (TimeComparison(startTimeStr, endTimeStr)) {
+                                log(startTimeStr + "\t" + endTimeStr);
+                                onDateClickListener.onDateClickListener(startTimeStr, endTimeStr);
+                                dismiss();
+                            } else {
+                                toast("结束时间需要大于开始时间");
+                            }
+                        } else {
+                            toast("结束时间不能超过当前时间");
+                        }
                     } else {
-                        log("结束时间需要大于开始时间");
-                        Toast.makeText(mContext, "结束时间需要大于开始时间", Toast.LENGTH_SHORT).show();
+                        toast("开始时间不能超过当前时间");
                     }
                 } else {
-                    log("结束时间需要大于开始时间");
-                    Toast.makeText(mContext, "结束时间不能超过当前时间", Toast.LENGTH_SHORT).show();
+                    onDateClickListener.onDateClickListener(startTimeStr, endTimeStr);
+                    dismiss();
                 }
             }
         } else if (view == butCancel) {
@@ -798,7 +817,13 @@ public class SelectPeriod extends PopupWindow implements View.OnClickListener {
     }
 
     private void log(Object obj) {
-        Log.v(TAG, obj.toString());
+        if (isDebug){
+            Log.v(TAG, obj.toString());
+        }
+    }
+
+    private void toast(Object msg) {
+        Toast.makeText(mContext, msg.toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void setOnDateClickListener(OnDateClickListener onDateClickListener) {

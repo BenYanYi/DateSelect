@@ -7,7 +7,7 @@
 
      compile 'com.github.BenYanYi:DateSelect:1.0.2'
 
- #### project 下添加
+#### project 下添加
 
     allprojects {
         repositories {
@@ -17,6 +17,11 @@
             }
         }
     }
+    
+### 1.0.3版本
+
+    SelectPeriod添加是否进行时间判断
+    SelectPeriod(Context context, SelectType selectType, boolean judgmentTime)
     
 ### 1.0.2版本
     SelectData selectData = new SelectData(this,selectType);
@@ -31,7 +36,14 @@
      NONE, HOUR, MIN  
      
      添加SelectPeriod(时间段选择，结束时间需大于开始时间，且不能大于当前时间)
-     用法和时间选择器一样(SelectData)
+     SelectPeriod selectPeriod = new SelectPeriod(mContext);
+     selectPeriod.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+     selectPeriod.setOnDateClickListener(new SelectPeriod.OnDateClickListener() {
+         @Override
+         public void onDateClickListener(String startTime, String endTime) {
+                     
+         }
+     });
     
 ### 1.0.1版本
 ##### 带时间的选择器
