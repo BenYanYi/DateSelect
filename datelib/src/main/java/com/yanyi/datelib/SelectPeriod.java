@@ -24,10 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * @author Administrator
- * @date 2018/5/19 17:24
- * @email ben@yanyi.red
- * @overview
+ * @author myLove
  */
 public class SelectPeriod extends PopupWindow implements View.OnClickListener {
     private String TAG = "SelectPeriod";
